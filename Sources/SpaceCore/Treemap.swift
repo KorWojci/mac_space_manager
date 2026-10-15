@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(CoreGraphics)
+import CoreGraphics
+#endif
 
 /// Squarified treemap layout (Bruls, Huizing & van Wijk).
 ///
