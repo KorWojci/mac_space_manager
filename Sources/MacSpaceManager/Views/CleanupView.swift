@@ -147,7 +147,7 @@ private struct CleanupCard: View {
                 VStack(alignment: .trailing, spacing: 2) {
                     Text(isEmpty ? "Clean" : category.totalSize.formattedBytes)
                         .font(.title3.weight(.bold).monospacedDigit())
-                        .foregroundStyle(isEmpty ? .secondary : .primary)
+                        .foregroundStyle(isEmpty ? Color.secondary : Color.primary)
                     if !isEmpty {
                         Text("\(category.entries.count) items")
                             .font(.caption)
