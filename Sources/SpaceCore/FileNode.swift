@@ -77,7 +77,8 @@ public final class FileNode: Identifiable, Hashable, @unchecked Sendable {
 
     /// Finds the node for `url` in this subtree, if it was tracked.
     public func node(at url: URL) -> FileNode? {
-        let target = url.standardizedFileURL.path
+        // Not `standardizedFileURL`: on macOS it strips a leading /private, unlike scanned paths.
+        let target = DiskScanner.canonicalURL(url).path
         var current: FileNode = self
         if target == current.path { return current }
         while true {
