@@ -78,7 +78,7 @@ public final class DiskScanner: @unchecked Sendable {
         progressHandler = handler
         lock.unlock()
 
-        let node = scanFolder(root.standardizedFileURL.resolvingSymlinksInPath(), kind: .directory, isRoot: true, parallel: true)
+        let node = scanFolder(Self.canonicalURL(root), kind: .directory, isRoot: true, parallel: true)
         report(path: root.path, force: true)
         return node
     }
@@ -157,6 +157,15 @@ public final class DiskScanner: @unchecked Sendable {
         let snapshot = progress
         lock.unlock()
         handler(snapshot)
+    }
+
+    /// The real path of `url` with every symlink resolved, matching the paths
+    /// directory listings return (e.g. `/private/var` rather than `/var` on macOS).
+    public static func canonicalURL(_ url: URL) -> URL {
+        let standardized = url.standardizedFileURL
+        guard let resolved = realpath(standardized.path, nil) else { return standardized }
+        defer { free(resolved) }
+        return URL(fileURLWithPath: String(cString: resolved), isDirectory: standardized.hasDirectoryPath)
     }
 
     /// Total allocated size of a file or folder (used for cleanup estimates).

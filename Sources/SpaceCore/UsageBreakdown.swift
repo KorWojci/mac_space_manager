@@ -56,7 +56,7 @@ public struct UsageClassifier: Sendable {
     private let homePath: String
 
     public init(homeDirectory: URL) {
-        let home = homeDirectory.standardizedFileURL.path
+        let home = DiskScanner.canonicalURL(homeDirectory).path
         homePath = home
         func h(_ relative: String) -> String { home + "/" + relative }
         let raw: [(String, UsageCategory)] = [

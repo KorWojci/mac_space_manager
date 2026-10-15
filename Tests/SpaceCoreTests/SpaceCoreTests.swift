@@ -79,7 +79,7 @@ final class FileSystemTests: XCTestCase {
             .appendingPathComponent("SpaceCoreTests-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: home, withIntermediateDirectories: true)
         // /var is a symlink to /private/var on macOS; use the real path like the scanner does.
-        home = home.resolvingSymlinksInPath()
+        home = DiskScanner.canonicalURL(home)
     }
 
     override func tearDownWithError() throws {
